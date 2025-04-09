@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Quicksy",
+    "version": "1.0.0",
+    "description": "All your links and tab management in one place.",
+    "action": {
+      "default_popup": "index.html"
+    },
+    "permissions": []
+  }
