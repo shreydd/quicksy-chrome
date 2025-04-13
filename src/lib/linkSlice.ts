@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { openDB, IDBPDatabase } from "idb"; // Import idb library
+import { openDB, type IDBPDatabase } from "idb"; // Import idb library
 import { v6 as uuidV6 } from "uuid";
 
 export type LinkItemType = {
@@ -61,9 +61,10 @@ export const addLinkToDB = createAsyncThunk(
       await tx.done;
 
       return { ...newLink, id };
-    } else {
-      throw new Error("Database not initialized");
     }
+    //  else {
+    //   throw new Error("Database not initialized");
+    // }
   }
 );
 
@@ -83,8 +84,6 @@ export const deleteLinkFromDB = createAsyncThunk(
       console.log("🚀 ~ item deleted:", item);
 
       return item;
-    } else {
-      throw new Error("Database not initialized");
     }
   }
 );
@@ -105,7 +104,9 @@ const linkSlice = createSlice({
     });
 
     builder.addCase(addLinkToDB.fulfilled, (state, action) => {
-      state.items.push(action.payload);
+      if (action.payload) {
+        state.items.push(action.payload);
+      }
     });
     builder.addCase(addLinkToDB.rejected, (state, action) => {
       console.log("🚀 ~ builder.addCase addLinkToDB.rejected ~ state:", state);
@@ -114,7 +115,7 @@ const linkSlice = createSlice({
 
     builder.addCase(deleteLinkFromDB.fulfilled, (state, action) => {
       console.log("here");
-      state.items = state.items.filter((item) => item.id !== action.payload.id);
+      state.items = state.items.filter((item) => item.id !== (action.payload?.id ?? ""));
     });
     builder.addCase(deleteLinkFromDB.rejected, (state, action) => {
       console.log(

@@ -26,7 +26,12 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { addLinkToDB, deleteLinkFromDB, LinkItemType } from "@/lib/linkSlice";
+import {
+  addLinkToDB,
+  deleteLinkFromDB,
+  type LinkItemType,
+} from "@/lib/linkSlice";
+import { toast } from "sonner";
 
 const SavedLinks = () => {
   const [userInput, setUserInput] = useState<{ tag: string; link: string }>({
@@ -50,8 +55,16 @@ const SavedLinks = () => {
     dispatch(deleteLinkFromDB(item));
   };
 
+  const handleCopyLink = (link: string) => {
+    toast.promise(navigator.clipboard.writeText(link), {
+      loading: "Copying link...",
+      success: "Link copied successfully",
+      error: "Link could not be copied successfully",
+    });
+  };
+
   return (
-    <Card className="max-w-full">
+    <Card className="max-w-full h-full">
       <CardHeader>
         <CardTitle>
           <h1 className="text-2xl font-semibold">Saved Links</h1>
@@ -73,18 +86,21 @@ const SavedLinks = () => {
                   <button
                     onClick={() => window.open(item.link, "_blank")}
                     className="hover:cursor-pointer"
+                    type="button"
                   >
                     <ArrowUpRightFromSquareIcon size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(item)}
                     className="hover:cursor-pointer"
+                    type="button"
                   >
                     <Trash2Icon size={16} />
                   </button>
                   <button
-                    onClick={() => navigator.clipboard.writeText(item.link)}
+                    onClick={() => handleCopyLink(item.link)}
                     className="hover:cursor-pointer"
+                    type="button"
                   >
                     <Copy size={16} />
                   </button>
