@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Quicksy = () => {
   return (
-    <div className="size-full min-w-3xl bg-gray-100 p-4 space-y-4">
+    <div className="size-full min-w-lg bg-gray-100 p-4 space-y-6">
       <div className="space-y-1">
         <h1 className="text-3xl font-semibold flex">
           <span className="">quick</span>
@@ -17,7 +17,7 @@ const Quicksy = () => {
         <p className="">Save links, manage tabs and move quick</p>
       </div>
       <Tabs defaultValue="collections" className="size-full">
-        <TabsList className="gap-4 border-b-black rounded-none">
+        <TabsList className="gap-4 rounded-none">
           <TabsTrigger value="collections">
             <BoxIcon size={16} />
             Collections

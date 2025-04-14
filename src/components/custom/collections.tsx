@@ -1,242 +1,27 @@
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
-// import { PlusIcon } from "lucide-react";
-// import { Input } from "../ui/input";
-// import { Label } from "../ui/label";
-// import { useState } from "react";
-// import { Button } from "../ui/button";
-// import { toast } from "sonner";
-// import { addCollectionToDB, type Collection } from "@/lib/collectionSlice";
-// import { useAppDispatch } from "@/lib/storeHooks";
-
-// const Collections = () => {
-//   const [collections, setCollections] = useState<Collection[]>([]);
-//   const [newLink, setNewLink] = useState<string>("");
-//   const [newCollection, setNewCollection] = useState<Omit<Collection, "links">>({
-//     title: "",
-//     description: "",
-//   });
-//   const [currentLinks, setCurrentLinks] = useState<string[]>([]);
-
-//   const dispatch = useAppDispatch();
-
-//   const openLinkGroup = (links: string[]) => {
-//     if (links && links.length > 0) {
-//       chrome.windows.create({ url: links });
-//     } else {
-//       // Optionally handle the case where there are no links
-//       console.warn("No links to open.");
-//     }
-//   };
-
-//   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-//     const { id, value } = event.target;
-//     if (id === "newCollectionTitle") {
-//       setNewCollection((prev) => ({ ...prev, title: value }));
-//     } else if (id === "newCollectionDesc") {
-//       setNewCollection((prev) => ({ ...prev, description: value }));
-//     } else if (id === "newLink") {
-//       setNewLink(value);
-//     }
-//   };
-
-//   const handleAddLink = () => {
-//     if (newLink.trim() !== "") {
-//       setCurrentLinks((prevLinks) => [...prevLinks, newLink.trim()]);
-//       setNewLink("");
-//     }
-//   };
-
-//   const handleCreateCollection = () => {
-//     if (newCollection.title.trim() !== "" && currentLinks.length > 0) {
-//       const newCollectionObject: Collection = {
-//         ...newCollection,
-//         links: currentLinks,
-//       };
-//       setCollections((prevCollections) => [...prevCollections, newCollectionObject]);
-//       dispatch(addCollectionToDB(newCollectionObject))
-//       setNewCollection({ title: "", description: "" });
-//       setCurrentLinks([]);
-//     } else {
-//       // Optionally handle cases where title is missing or no links are added
-//       toast("Please add a title and at least one link to create a collection.");
-//     }
-//   };
-
-//   return (
-//     <section className="col-span-full">
-//       <Card>
-//         <CardHeader>
-//           <CardTitle className="text-2xl font-semibold">Collections</CardTitle>
-//           <CardDescription>
-//             Grouped links for easier context switching
-//           </CardDescription>
-//         </CardHeader>
-//         <CardContent className="grid grid-cols-3 gap-4">
-//           {collections.map((collection) => (
-//             <Card
-//               key={collection.title}
-//               onClick={() => openLinkGroup(collection.links)}
-//               className="cursor-pointer"
-//             >
-//               <CardHeader>
-//                 <CardTitle>{collection.title}</CardTitle>
-//                 <CardDescription>{collection.description}</CardDescription>
-//               </CardHeader>
-//               <CardContent>
-//                 {collection.links.map((link) => (
-//                   <p key={link} className="truncate">
-//                     {link}
-//                   </p>
-//                 ))}
-//               </CardContent>
-//               <CardFooter>
-//                 <p>Click to open {collection.links.length} links</p>
-//               </CardFooter>
-//             </Card>
-//           ))}
-//         </CardContent>
-//         <CardFooter>
-//           <Dialog>
-//             <DialogTrigger className="hover:cursor-pointer rounded-full p-1 bg-primary">
-//               <PlusIcon size={16} color="white" />
-//             </DialogTrigger>
-//             <DialogContent>
-//               <DialogHeader>
-//                 <DialogTitle>Add a collection of links</DialogTitle>
-//                 <DialogDescription>
-//                   Group a collection of links and be able to open them together
-//                   in a separate window, helps with context switching
-//                 </DialogDescription>
-//               </DialogHeader>
-//               <div className="grid gap-6 py-4">
-//                 <div className="space-y-2">
-//                   <Label htmlFor="newCollectionTitle" className="">
-//                     Collection title
-//                   </Label>
-//                   <Input
-//                     id="newCollectionTitle"
-//                     value={newCollection.title}
-//                     className=""
-//                     type="text"
-//                     onChange={handleInputChange}
-//                   />
-//                 </div>
-//                 <div className="space-y-2">
-//                   <Label htmlFor="newCollectionDesc" className="">
-//                     Collection description
-//                   </Label>
-//                   <Input
-//                     id="newCollectionDesc"
-//                     value={newCollection.description}
-//                     className=""
-//                     type="textarea"
-//                     onChange={handleInputChange}
-//                   />
-//                 </div>
-//                 <div className="space-y-2">
-//                   <Label htmlFor="newLink" className="">
-//                     Link
-//                   </Label>
-//                   <div className="flex gap-2">
-//                     <Input
-//                       id="newLink"
-//                       value={newLink}
-//                       className=""
-//                       type="url"
-//                       onChange={handleInputChange}
-//                     />
-//                     <Button onClick={handleAddLink}>Add</Button>
-//                   </div>
-//                 </div>
-//                 {currentLinks.length > 0 && (
-//                   <div className="space-y-2">
-//                     <Label>Current Links:</Label>
-//                     {currentLinks.map((link) => (
-//                       <p key={link} className="truncate">
-//                         {link}
-//                       </p>
-//                     ))}
-//                   </div>
-//                 )}
-//               </div>
-//               <DialogFooter>
-//                 <Button type="button" onClick={handleCreateCollection}>
-//                   Create Collection
-//                 </Button>
-//               </DialogFooter>
-//             </DialogContent>
-//           </Dialog>
-//         </CardFooter>
-//       </Card>
-//     </section>
-//   );
-// };
-
-// export { Collections };
-
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { PlusIcon, Trash2Icon } from "lucide-react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { useState, useEffect } from "react";
-import { Button } from "../ui/button";
+import { ExternalLinkIcon, Trash2Icon } from "lucide-react";
+import { useEffect } from "react";
+// import { Button } from "../ui/button";
 import { toast } from "sonner";
 import {
-  addCollectionToDB,
   deleteCollectionFromDB,
-  type CollectionItemType as Collection, // Alias for clarity
+  type CollectionItemType as Collection,
   initializeCollectionsFromDB,
 } from "@/lib/collectionSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/storeHooks";
+import { CreateCollectionDialog } from "./create-collection-dialog";
 
 const Collections = () => {
   const collections = useAppSelector((state) => state.collections.items);
   const dispatch = useAppDispatch();
 
-  const [newLink, setNewLink] = useState<string>("");
-  const [newCollection, setNewCollection] = useState<
-    Omit<Collection, "links" | "id">
-  >({
-    title: "",
-    description: "",
-  });
-  const [currentLinks, setCurrentLinks] = useState<string[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   useEffect(() => {
-    // Dispatch the initialization thunk on component mount
     dispatch(initializeCollectionsFromDB());
   }, [dispatch]);
 
@@ -245,47 +30,6 @@ const Collections = () => {
       chrome.windows.create({ url: links });
     } else {
       toast.warning("This collection has no links to open.");
-    }
-  };
-
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { id, value } = event.target;
-    if (id === "newCollectionTitle") {
-      setNewCollection((prev) => ({ ...prev, title: value }));
-    } else if (id === "newCollectionDesc") {
-      setNewCollection((prev) => ({ ...prev, description: value }));
-    } else if (id === "newLink") {
-      setNewLink(value);
-    }
-  };
-
-  const handleAddLink = () => {
-    if (newLink.trim() !== "") {
-      setCurrentLinks((prevLinks) => [...prevLinks, newLink.trim()]);
-      setNewLink("");
-    }
-  };
-
-  const handleCreateCollection = () => {
-    if (newCollection.title.trim() !== "" && currentLinks.length > 0) {
-      const newCollectionObject: Omit<Collection, "id"> = {
-        ...newCollection,
-        links: currentLinks,
-      };
-      dispatch(addCollectionToDB(newCollectionObject)).then(() => {
-        toast.success(
-          `Collection "${newCollection.title}" created successfully!`
-        );
-        setNewCollection({ title: "", description: "" });
-        setCurrentLinks([]);
-        setIsDialogOpen(false); // Close the dialog after successful creation
-      });
-    } else {
-      toast.error(
-        "Please provide a title and at least one link for the collection."
-      );
     }
   };
 
@@ -298,35 +42,33 @@ const Collections = () => {
   return (
     <section className="mt-4">
       <div className="space-y-4">
-        <div>
-          <div className="text-2xl font-semibold">Collections</div>
-          <div>Grouped links for easier context switching</div>
+        <div className="flex justify-between">
+          <div className="">
+            <div className="text-2xl font-semibold">Collections</div>
+            <div>Grouped links for easier context switching</div>
+          </div>
+          <div className="">
+            <CreateCollectionDialog />
+          </div>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-4 grid grid-cols-2 gap-3">
           {collections.map((collection) => (
-            <div key={collection.id} className="relative">
-              <Card className="">
+            <div key={collection.id} className="relative size-full">
+              <Card className="size-full border-0 pb-0">
                 <CardHeader>
                   <CardTitle>{collection.title}</CardTitle>
                   <CardDescription>{collection.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  {collection.links.map((link) => (
-                    <p key={link} className="truncate">
-                      {link}
-                    </p>
-                  ))}
-                </CardContent>
-                <CardFooter>
-                  <Button
+                <CardFooter className="bg-green-300 mt-auto rounded-b-lg p-2 flex flex-col items-center justify-center border-b-green-300">
+                  <button
                     type="button"
-                    variant={"default"}
                     onClick={() => openLinkGroup(collection.links)}
-                    className=""
+                    className="flex gap-1"
                   >
                     Open {collection.links.length} link
                     {collection.links.length !== 1 ? "s" : ""}
-                  </Button>
+                    <ExternalLinkIcon size={16} />
+                  </button>
                 </CardFooter>
               </Card>
               {/* Basic delete button - consider a more visually appealing UI */}
@@ -339,78 +81,6 @@ const Collections = () => {
               </button>
             </div>
           ))}
-        </div>
-        <div className="mt-6 flex justify-end">
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className="hover:cursor-pointer rounded-full p-1 bg-primary">
-              <PlusIcon size={16} color="white" />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add a collection of links</DialogTitle>
-                <DialogDescription>
-                  Group a collection of links and be able to open them together
-                  in a separate window, helps with context switching
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-6 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="newCollectionTitle" className="">
-                    Collection title
-                  </Label>
-                  <Input
-                    id="newCollectionTitle"
-                    value={newCollection.title}
-                    className=""
-                    type="text"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newCollectionDesc" className="">
-                    Collection description
-                  </Label>
-                  <Input
-                    id="newCollectionDesc"
-                    value={newCollection.description}
-                    className=""
-                    type="textarea"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newLink" className="">
-                    Link
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="newLink"
-                      value={newLink}
-                      className=""
-                      type="url"
-                      onChange={handleInputChange}
-                    />
-                    <Button onClick={handleAddLink}>Add</Button>
-                  </div>
-                </div>
-                {currentLinks.length > 0 && (
-                  <div className="space-y-2">
-                    <Label>Current Links:</Label>
-                    {currentLinks.map((link) => (
-                      <p key={link} className="truncate">
-                        {link}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <DialogFooter>
-                <Button type="button" onClick={handleCreateCollection}>
-                  Create Collection
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </div>
       </div>
     </section>
