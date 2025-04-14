@@ -124,16 +124,18 @@ const CreateCollectionDialog = () => {
             </div>
           </div>
           {currentLinks.length > 0 && (
-            <div className="space-y-2 container flex h-24 overflow-y-auto scroll-smooth flex-row flex-wrap gap-x-2 gap-y-0.5">
+            <div className="space-y-2 container h-24 overflow-y-auto scroll-smooth">
               <Label>Current Links:</Label>
-              {currentLinks.map((link) => (
-                <span
-                  key={link}
-                  className="line-clamp-1 bg-green-500 rounded-full text-white px-2 size-fit py-0.5"
-                >
-                  {link}
-                </span>
-              ))}
+              <div className="space-y-1">
+                {currentLinks.map((link) => (
+                  <span
+                    key={link}
+                    className="line-clamp-1 bg-green-500 rounded-full text-white px-2 size-fit py-0.5"
+                  >
+                    {link}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
         </div>
