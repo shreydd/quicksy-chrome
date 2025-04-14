@@ -24,7 +24,6 @@
 // import { addCollectionToDB, type Collection } from "@/lib/collectionSlice";
 // import { useAppDispatch } from "@/lib/storeHooks";
 
-
 // const Collections = () => {
 //   const [collections, setCollections] = useState<Collection[]>([]);
 //   const [newLink, setNewLink] = useState<string>("");
@@ -276,7 +275,9 @@ const Collections = () => {
         links: currentLinks,
       };
       dispatch(addCollectionToDB(newCollectionObject)).then(() => {
-        toast.success(`Collection "${newCollection.title}" created successfully!`);
+        toast.success(
+          `Collection "${newCollection.title}" created successfully!`
+        );
         setNewCollection({ title: "", description: "" });
         setCurrentLinks([]);
         setIsDialogOpen(false); // Close the dialog after successful creation
@@ -295,21 +296,16 @@ const Collections = () => {
   };
 
   return (
-    <section className="col-span-full">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-semibold">Collections</CardTitle>
-          <CardDescription>
-            Grouped links for easier context switching
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid grid-cols-3 gap-4">
+    <section className="mt-4">
+      <div className="space-y-4">
+        <div>
+          <div className="text-2xl font-semibold">Collections</div>
+          <div>Grouped links for easier context switching</div>
+        </div>
+        <div className="space-y-4">
           {collections.map((collection) => (
             <div key={collection.id} className="relative">
-              <Card
-                onClick={() => openLinkGroup(collection.links)}
-                className="cursor-pointer"
-              >
+              <Card className="">
                 <CardHeader>
                   <CardTitle>{collection.title}</CardTitle>
                   <CardDescription>{collection.description}</CardDescription>
@@ -322,21 +318,29 @@ const Collections = () => {
                   ))}
                 </CardContent>
                 <CardFooter>
-                  <p>Click to open {collection.links.length} links</p>
+                  <Button
+                    type="button"
+                    variant={"default"}
+                    onClick={() => openLinkGroup(collection.links)}
+                    className=""
+                  >
+                    Open {collection.links.length} link
+                    {collection.links.length !== 1 ? "s" : ""}
+                  </Button>
                 </CardFooter>
               </Card>
               {/* Basic delete button - consider a more visually appealing UI */}
               <button
                 onClick={() => handleDeleteCollection(collection)}
-                className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                className="absolute top-3 right-3 text-red-500 hover:text-red-700 hover:cursor-pointer"
                 type="button"
               >
                 <Trash2Icon size={16} />
               </button>
             </div>
           ))}
-        </CardContent>
-        <CardFooter>
+        </div>
+        <div className="mt-6 flex justify-end">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger className="hover:cursor-pointer rounded-full p-1 bg-primary">
               <PlusIcon size={16} color="white" />
@@ -407,8 +411,8 @@ const Collections = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </section>
   );
 };

@@ -1,12 +1,4 @@
-// import React from "react";
 import { useAppSelector, useAppDispatch } from "@/lib/storeHooks";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 import {
   ArrowUpRightFromSquareIcon,
   Copy,
@@ -32,6 +24,7 @@ import {
   type LinkItemType,
 } from "@/lib/linkSlice";
 import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const SavedLinks = () => {
   const [userInput, setUserInput] = useState<{ tag: string; link: string }>({
@@ -48,7 +41,10 @@ const SavedLinks = () => {
   const dispatch = useAppDispatch();
 
   const addLinkToStore = () => {
-    dispatch(addLinkToDB(userInput));
+    toast.promise(dispatch(addLinkToDB(userInput)), {
+      success: "Link added successfully!",
+      error: "Error! link was not saved.",
+    });
   };
 
   const handleDelete = (item: LinkItemType) => {
@@ -64,50 +60,52 @@ const SavedLinks = () => {
   };
 
   return (
-    <Card className="max-w-full h-full">
-      <CardHeader>
-        <CardTitle>
+    <div className="max-w-full h-full mt-4 space-y-4">
+      <div>
+        <div>
           <h1 className="text-2xl font-semibold">Saved Links</h1>
-        </CardTitle>
-        <CardDescription>
+        </div>
+        <div>
           <p>List of URLs saved in your Chrome extension.</p>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </div>
+      </div>
+      <div>
         {Array.isArray(savedLinks) ? (
-          <ul className="space-y-2 max-h-44 overflow-y-auto scroll-smooth">
-            {savedLinks.map((item) => (
-              <li
-                key={item.tag}
-                className="text-gray-700 border border-gray-200 relative flex items-start justify-start w-full group p-2 rounded hover:bg-white truncate text-start"
-              >
-                {item.tag}
-                <span className="absolute top-0 right-0 bottom-0 group-hover:bg-gradient-to-r group-hover:from-transparent group-hover:via-blue-100 group-hover:to-blue-200 rounded p-2 gap-2 hidden group-hover:flex">
-                  <button
-                    onClick={() => window.open(item.link, "_blank")}
-                    className="hover:cursor-pointer"
-                    type="button"
-                  >
-                    <ArrowUpRightFromSquareIcon size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item)}
-                    className="hover:cursor-pointer"
-                    type="button"
-                  >
-                    <Trash2Icon size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleCopyLink(item.link)}
-                    className="hover:cursor-pointer"
-                    type="button"
-                  >
-                    <Copy size={16} />
-                  </button>
-                </span>
-              </li>
-            ))}
-          </ul>
+          <ScrollArea className="h-72 w-[99%] mx-auto rounded">
+            <ul className="relative p-4">
+              {savedLinks.map((item) => (
+                <li
+                  key={item.tag}
+                  className="text-gray-900 border-b-2 text-base relative flex items-start justify-start w-full group p-2 truncate text-start"
+                >
+                  {item.tag}
+                  <span className="absolute top-0 right-0 bottom-0 group-hover:bg-gradient-to-r group-hover:from-transparent group-hover:via-green-100 group-hover:to-green-200 rounded p-2 gap-2 hidden group-hover:flex">
+                    <button
+                      onClick={() => window.open(item.link, "_blank")}
+                      className="hover:cursor-pointer"
+                      type="button"
+                    >
+                      <ArrowUpRightFromSquareIcon size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item)}
+                      className="hover:cursor-pointer"
+                      type="button"
+                    >
+                      <Trash2Icon size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleCopyLink(item.link)}
+                      className="hover:cursor-pointer"
+                      type="button"
+                    >
+                      <Copy size={16} />
+                    </button>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
         ) : (
           <p>Saved links not found</p>
         )}
@@ -157,8 +155,8 @@ const SavedLinks = () => {
             </DialogContent>
           </Dialog>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
