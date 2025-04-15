@@ -1,6 +1,6 @@
-# React Chrome Extension Template
+# Quicksy
 
-This is a template for creating a Chrome extension using React and [Vite](https://vitejs.dev/) with TypeScript.
+This is a chrome extension built to copy and save links & group links (as a collection) so that you can context switch easily, intended to use like a workspace.
 
 ## Getting Started
 
@@ -14,8 +14,8 @@ Make sure you have [Node.js](https://nodejs.org/) (version 18+ or 20+) installed
 
     ```sh
     # To clone
-    git clone https://github.com/5tigerjelly/chrome-extension-react-template
-    cd chrome-extension-react-template
+    git clone https://github.com/shreydd/quicksy-chrome.git
+    cd quicksy-chrome
     ```
 
 2. Install the dependencies:
@@ -24,19 +24,9 @@ Make sure you have [Node.js](https://nodejs.org/) (version 18+ or 20+) installed
     npm install
     ```
 
-## 🏗️ Development
-
-To start the development server:
-
-```sh
-npm run dev
-```
-
-This will start the Vite development server and open your default browser.
-
 ## 📦 Build
 
-To create a production build:
+Create a production build:
 
 ```sh
 npm run build
@@ -59,6 +49,11 @@ Your React app should now be loaded as a Chrome extension!
 - `vite.config.ts`: Vite configuration file.
 - `tsconfig.json`: TypeScript configuration file.
 - `package.json`: Contains the project dependencies and scripts.
+
+## Credits
+
+- Built using this template: https://github.com/5tigerjelly/chrome-extension-react-template
+- Uses shadcn/ui, lucide icons, vite, react.js
 
 ## License
 
