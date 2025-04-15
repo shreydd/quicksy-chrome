@@ -1,15 +1,17 @@
 import React from "react";
-import { ArrowRightFromLineIcon } from "lucide-react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "../ui/card";
+import { ArrowRightFromLineIcon, Copy } from "lucide-react";
+import { toast } from "sonner";
 
 const ActiveTabs = () => {
   const [activeTabs, setActiveTabs] = React.useState<chrome.tabs.Tab[]>([]);
+
+  const handleCopyLink = (link: string) => {
+    toast.promise(navigator.clipboard.writeText(link), {
+      loading: "Copying link...",
+      success: "Link copied successfully",
+      error: "Link could not be copied successfully",
+    });
+  };
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && window.chrome?.tabs) {
@@ -20,25 +22,26 @@ const ActiveTabs = () => {
   }, []);
 
   return (
-    <Card className="max-w-full h-full">
-      <CardHeader>
-        <CardTitle className="text-2xl font-semibold">Open Tabs</CardTitle>
-        <CardDescription>
-          List of URLs for tabs currently open in your Chrome window.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="max-w-full h-full mt-4 space-y-4">
+      <div>
+        <h1 className="text-2xl font-semibold">Open Tabs</h1>
+        <p>List of URLs for tabs currently open in your Chrome window.</p>
+      </div>
+      <div>
         {activeTabs.length > 0 ? (
-          <ul className="space-y-2">
+          <ul className="h-48 overflow-y-auto scroll-smooth">
             {activeTabs.map((tab) => (
               <li
                 key={tab.id}
-                className="text-gray-700 border border-gray-200 relative flex items-start justify-start w-full group p-2 rounded hover:bg-white truncate text-start"
+                className="border-b-green-800 border-b flex flex-col relative items-start justify-start group p-2 truncate text-start"
               >
-                {tab.title}
-                <span className="absolute top-0 right-0 bottom-0 group-hover:bg-gradient-to-r group-hover:from-transparent group-hover:via-blue-100 group-hover:to-blue-200 rounded p-2 gap-2 hidden group-hover:flex">
+                <span className="text-black truncate">{tab.title}</span>
+                <span className="text-gray-400 truncate max-w-[60%]">
+                  {tab.url}
+                </span>
+                <span className="absolute top-0 right-0 bottom-0 p-2 gap-2 flex">
                   <button
-                    className="text-gray-500 hover:text-gray-700 hover:cursor-pointer"
+                    className="hover:cursor-pointer"
                     type="button"
                     onClick={() => {
                       if (tab.id !== undefined) {
@@ -48,6 +51,15 @@ const ActiveTabs = () => {
                   >
                     <ArrowRightFromLineIcon size={16} />
                   </button>
+                  {tab.url && tab.url?.length > 0 && (
+                    <button
+                      onClick={() => tab.url && handleCopyLink(tab.url)}
+                      className="hover:cursor-pointer"
+                      type="button"
+                    >
+                      <Copy size={16} />
+                    </button>
+                  )}
                 </span>
               </li>
             ))}
@@ -57,8 +69,8 @@ const ActiveTabs = () => {
             No tabs found / Not in a chrome extension environment
           </p>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
