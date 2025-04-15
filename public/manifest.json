@@ -6,6 +6,12 @@
     "action": {
       "default_popup": "index.html"
     },
+    "icons": {
+      "16": "quicksy-logo.png",
+      "32": "quicksy-logo.png",
+      "48": "quicksy-logo.png",
+      "128": "quicksy-logo.png"
+    },
     "permissions": [
       "tabs",
       "storage",

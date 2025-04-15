@@ -63,13 +63,3 @@ Your React app should now be loaded as a Chrome extension!
 ## License
 
 This project is licensed under the MIT License.
-
-### TO-DOs
-
-- Option to update collections
-
-- Option to update saved links
-
-- search collections and links
-
-- toggle an option to close previous window when opening new collection

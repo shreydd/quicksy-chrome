@@ -55,7 +55,7 @@ const SavedLinks = () => {
                   key={item.tag}
                   className="border-b-green-800 border-b flex flex-col relative items-start justify-start group p-2 truncate text-start"
                 >
-                  <span className="text-black truncate">{item.tag}</span>
+                  <span className="text-black truncate max-w-[60%]">{item.tag}</span>
                   <span className="text-gray-400 truncate max-w-[60%]">
                     {item.link}
                   </span>
