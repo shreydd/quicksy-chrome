@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const SavedLinks = () => {
   const savedLinks = useAppSelector((store) => store.links.items);
@@ -35,7 +36,7 @@ const SavedLinks = () => {
   };
 
   return (
-    <div className="max-w-full h-full mt-4 space-y-4">
+    <div className="max-w-full h-screen mt-4 space-y-4">
       <div className="flex justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Saved Links</h1>
@@ -48,14 +49,20 @@ const SavedLinks = () => {
       <div>
         {Array.isArray(savedLinks) ? (
           // <ScrollArea className="">
-          <ul className="h-48 overflow-y-auto scroll-smooth">
-            {savedLinks.map((item) => (
+          <ul className="">
+            {savedLinks.map((item, index) => (
               <>
                 <li
                   key={item.tag}
-                  className="border-b-green-800 border-b flex flex-col relative items-start justify-start group p-2 truncate text-start"
+                  className={cn(
+                    "flex flex-col relative items-start justify-start group p-2 truncate text-start",
+                    index !== savedLinks.length - 1 &&
+                      "border-b border-b-green-800"
+                  )}
                 >
-                  <span className="text-black truncate max-w-[60%]">{item.tag}</span>
+                  <span className="text-black truncate max-w-[60%]">
+                    {item.tag}
+                  </span>
                   <span className="text-gray-400 truncate max-w-[60%]">
                     {item.link}
                   </span>

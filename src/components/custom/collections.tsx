@@ -40,7 +40,7 @@ const Collections = () => {
   };
 
   return (
-    <section className="mt-4">
+    <section className="mt-4 h-screen">
       <div className="space-y-4">
         <div className="flex justify-between">
           <div className="">
