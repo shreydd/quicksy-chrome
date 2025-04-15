@@ -2,7 +2,6 @@
 
 This is a template for creating a Chrome extension using React and [Vite](https://vitejs.dev/) with TypeScript.
 
-
 ## Getting Started
 
 ### Prerequisites
@@ -35,7 +34,7 @@ npm run dev
 
 This will start the Vite development server and open your default browser.
 
-## 📦 Build 
+## 📦 Build
 
 To create a production build:
 
@@ -64,3 +63,13 @@ Your React app should now be loaded as a Chrome extension!
 ## License
 
 This project is licensed under the MIT License.
+
+### TO-DOs
+
+- Option to update collections
+
+- Option to update saved links
+
+- search collections and links
+
+- toggle an option to close previous window when opening new collection
